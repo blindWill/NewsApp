@@ -4,16 +4,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.newsapp.R
 import com.example.newsapp.adapter.NewsAdapter
+import com.example.newsapp.data.Article
 import com.example.newsapp.databinding.FragmentBreakingNewsBinding
 import com.example.newsapp.viewmodels.BreakingNewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class BreakingNewsFragment : Fragment() {
+class BreakingNewsFragment : Fragment(), NewsAdapter.Listener {
 
     private var _binding: FragmentBreakingNewsBinding? = null
     private val binding get() = _binding!!
@@ -43,7 +49,7 @@ class BreakingNewsFragment : Fragment() {
     private fun setUpRecycler() {
         binding.newsRV.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        binding.newsRV.adapter = NewsAdapter(requireContext())
+        binding.newsRV.adapter = NewsAdapter(requireContext(), this)
     }
 
     private fun setUpObservers() {
@@ -53,5 +59,15 @@ class BreakingNewsFragment : Fragment() {
         viewModel.dataForRecycler.observe(viewLifecycleOwner) { dataForRecycler ->
            (binding.newsRV.adapter as NewsAdapter).differ.submitList(dataForRecycler)
         }
+    }
+
+    override fun onClick(article: Article) {
+        val bundle = Bundle().apply {
+            putString("url", article.url)
+        }
+        findNavController().navigate(
+            R.id.action_breakingNewsFragment_to_articleWebViewFragment,
+            bundle
+        )
     }
 }

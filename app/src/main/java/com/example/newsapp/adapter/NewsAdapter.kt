@@ -1,6 +1,7 @@
 package com.example.newsapp.adapter
 
 import android.content.Context
+import android.location.GnssAntennaInfo.Listener
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -9,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.newsapp.data.Article
 import com.example.newsapp.databinding.NewsItemBinding
-//private var data: ArrayList<NewsItemData>,
-class NewsAdapter(val context: Context) :
+
+class NewsAdapter(val context: Context, private val listener: Listener) :
     RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -20,7 +21,7 @@ class NewsAdapter(val context: Context) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(differ.currentList[position])
+        holder.bind(differ.currentList[position], listener)
     }
 
     override fun getItemCount(): Int {
@@ -29,15 +30,19 @@ class NewsAdapter(val context: Context) :
 
     inner class ViewHolder(private val binding: NewsItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Article) {
+        fun bind(item: Article, listener: Listener) {
             binding.apply { //with(binding)
                 Glide.with(context).load(item.urlToImage).into(ArticleImageIV)
                 TitleTV.text = item.title
                 AuthorTV.text = item.author
                 DescriptionTV.text = item.content
                 PublishedTimeTV.text = item.publishedAt
+                itemView.setOnClickListener {
+                    listener.onClick(item)
+                }
             }
         }
+
     }
 
     private val differCallback = object: DiffUtil.ItemCallback<Article>(){
@@ -51,5 +56,9 @@ class NewsAdapter(val context: Context) :
     }
 
     val differ = AsyncListDiffer(this, differCallback)
+
+    interface Listener{
+        fun onClick(article: Article)
+    }
 
 }

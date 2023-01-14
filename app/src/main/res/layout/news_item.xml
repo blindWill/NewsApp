@@ -24,21 +24,24 @@
 
         <TextView
             android:id="@+id/AuthorTV"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:maxLines="2"
             tools:text="Emma James"
+            android:gravity="end"
             android:textColor="@android:color/black"
             app:layout_constraintStart_toEndOf="@id/ArticleImageIV"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/TitleTV" />
+            app:layout_constraintTop_toBottomOf="@+id/TitleTV"
+            app:layout_constraintBottom_toTopOf="@id/PublishedTimeTV"/>
 
         <TextView
             android:id="@+id/TitleTV"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:ellipsize="end"
             android:maxLines="4"
             tools:text="Twitter's San Fran HQ stinks of BO and takeaways after Elon Musk stopped paying rent and janitors"
