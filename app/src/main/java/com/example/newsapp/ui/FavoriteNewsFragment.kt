@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import com.example.newsapp.R
 
 
-class FavoriteNewsFragment : Fragment(R.layout.fragment_latest_news) {
+class FavoriteNewsFragment : Fragment(R.layout.fragment_breaking_news) {
 
 //    override fun onCreate(savedInstanceState: Bundle?) {
 //        super.onCreate(savedInstanceState)
