@@ -63,7 +63,7 @@ class BreakingNewsFragment : Fragment(), NewsAdapter.Listener {
 
     override fun onClick(article: Article) {
         val bundle = Bundle().apply {
-            putString("url", article.url)
+            putSerializable("article", article)
         }
         findNavController().navigate(
             R.id.action_breakingNewsFragment_to_articleWebViewFragment,

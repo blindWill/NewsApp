@@ -37,4 +37,15 @@ class BreakingNewsViewModel @Inject constructor(private val repo: MainRemoteRepo
         val newList = newData.articles
         dataForRecycler.postValue(newList)
     }
+
+
+    fun saveArticle(article: Article) = viewModelScope.launch {
+        repo.insert(article)
+    }
+
+    fun getSavedNews() = repo.getSavedNews()
+
+    fun deleteArticle(article: Article) = viewModelScope.launch {
+        repo.deleteArticle(article)
+    }
 }

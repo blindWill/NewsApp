@@ -7,13 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.newsapp.R
+import com.example.newsapp.data.Article
 import com.example.newsapp.databinding.FragmentArticleWebViewBinding
 import com.example.newsapp.databinding.FragmentBreakingNewsBinding
+import com.example.newsapp.viewmodels.BreakingNewsViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ArticleWebViewFragment : Fragment() {
+
+    private val viewModel: BreakingNewsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,14 +35,18 @@ class ArticleWebViewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val webView: WebView = view.findViewById(R.id.webView)
+        val article = arguments?.getSerializable("article") as Article
 
         webView.apply {
             webViewClient = WebViewClient()
-            val url = arguments?.getString("url")
-            if (url != null) {
-                loadUrl(url)
-            }
+            article.url?.let { loadUrl(it) }
         }
+
+        val saveButton: FloatingActionButton = view.findViewById(R.id.saveFAB)
+        saveButton.setOnClickListener{
+            viewModel.saveArticle(article)
+        }
+
     }
 }
 

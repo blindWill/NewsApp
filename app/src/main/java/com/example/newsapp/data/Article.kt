@@ -19,4 +19,4 @@ data class Article(
     @SerializedName("urlToImage") var urlToImage: String? = null,
     @SerializedName("publishedAt") var publishedAt: String? = null,
     @SerializedName("content") var content: String? = null
-)
+): java.io.Serializable
