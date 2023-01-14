@@ -1,14 +1,21 @@
 package com.example.newsapp.di
 
 
+import android.content.Context
+import androidx.room.Room
 import androidx.viewbinding.BuildConfig
 import com.example.newsapp.api.NewsAPI
+import com.example.newsapp.data.Article
+import com.example.newsapp.db.ArticleDao
+import com.example.newsapp.db.ArticleDatabase
 import com.example.newsapp.repositories.MainRemoteRepo
 import com.example.newsapp.utils.Constants.API_KEY
+import com.example.newsapp.utils.Constants.ARTICLE_DATABASE
 import com.example.newsapp.utils.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -21,6 +28,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
+    //Retrofit
     @Provides
     @Singleton
     fun provideBaseUrl() = BASE_URL
@@ -74,8 +82,24 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRemoteRepo(api: NewsAPI): MainRemoteRepo {
-        return MainRemoteRepo(api)
+    fun provideRemoteRepo(api: NewsAPI, dao: ArticleDao): MainRemoteRepo {
+        return MainRemoteRepo(api, dao)
     }
+
+    //Room Database
+    @Provides
+    @Singleton
+    fun provide(@ApplicationContext context: Context) = Room.databaseBuilder(
+        context, ArticleDatabase::class.java, ARTICLE_DATABASE)
+        .allowMainThreadQueries()
+        .fallbackToDestructiveMigration()
+        .build()
+
+    @Provides
+    @Singleton
+    fun provideDao(db: ArticleDatabase) = db.getArticleDao()
+
+    @Provides
+    fun provideEntity() = Article()
 
 }

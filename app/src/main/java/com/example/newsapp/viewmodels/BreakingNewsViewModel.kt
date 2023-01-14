@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.newsapp.data.Article
-import com.example.newsapp.data.NewsItemData
 import com.example.newsapp.data.NewsResponse
 import com.example.newsapp.repositories.MainRemoteRepo
 import com.example.newsapp.utils.Constants.COUNTRY_CODE
@@ -14,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class BreakingNewsViewModel @Inject constructor(val repo: MainRemoteRepo): ViewModel() {
+class BreakingNewsViewModel @Inject constructor(private val repo: MainRemoteRepo): ViewModel() {
 
     val breakingNews = MutableLiveData<NewsResponse>()
 
@@ -28,7 +27,7 @@ class BreakingNewsViewModel @Inject constructor(val repo: MainRemoteRepo): ViewM
             } else {
                 Log.d(
                     "Network log",
-                    "fetchNews: code: ${response.code()} message: ${response.message()} "
+                    "fetchBreakingNews: code: ${response.code()} message: ${response.message()} "
                 )
             }
         }
