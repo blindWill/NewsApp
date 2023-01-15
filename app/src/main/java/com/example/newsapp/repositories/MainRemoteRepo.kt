@@ -10,6 +10,8 @@ class MainRemoteRepo @Inject constructor(private val newsApi: NewsAPI, private v
 
     suspend fun getBreakingNews(country: String) = newsApi.getBreakingNews(country)
 
+    suspend fun searchForNews(searchQuery: String) = newsApi.searchForNews(searchQuery)
+
     suspend fun insert(article: Article) = articleDao.insert(article)
 
     fun getSavedNews() = articleDao.getAllArticles()

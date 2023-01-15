@@ -6,4 +6,5 @@ object Constants {
     const val COUNTRY_CODE = "us"
     const val ARTICLE_DATABASE= "article_database"
     const val ARTICLE_TABLE = "article_table"
+    const val SEARCH_NEWS_TIME_DELAY = 700L
 }

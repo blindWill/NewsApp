@@ -43,10 +43,24 @@ class FavoriteNewsFragment : Fragment(), NewsAdapter.Listener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRecycler()
+        setupObservers()
+        onSwipeDeleteArticle(view)
+
+    }
+
+    private fun setUpRecycler() {
+        binding.favoriteNewsRV.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.favoriteNewsRV.adapter = NewsAdapter(requireContext(), this)
+    }
+
+    private fun setupObservers(){
         viewModel.getSavedNews().observe(viewLifecycleOwner){ articles ->
             (binding.favoriteNewsRV.adapter as NewsAdapter).differ.submitList(articles)
         }
+    }
 
+    private fun onSwipeDeleteArticle(view: View){
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
@@ -75,12 +89,6 @@ class FavoriteNewsFragment : Fragment(), NewsAdapter.Listener {
         ItemTouchHelper(itemTouchHelperCallback).apply {
             attachToRecyclerView(binding.favoriteNewsRV)
         }
-    }
-
-    private fun setUpRecycler() {
-        binding.favoriteNewsRV.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        binding.favoriteNewsRV.adapter = NewsAdapter(requireContext(), this)
     }
 
     override fun onClick(article: Article) {

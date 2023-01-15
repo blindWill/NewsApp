@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bumptech.glide.load.engine.Resource
 import com.example.newsapp.data.Article
 import com.example.newsapp.data.NewsResponse
 import com.example.newsapp.repositories.MainRemoteRepo
@@ -18,6 +19,8 @@ class BreakingNewsViewModel @Inject constructor(private val repo: MainRemoteRepo
     val breakingNews = MutableLiveData<NewsResponse>()
 
     val dataForRecycler = MutableLiveData<ArrayList<Article>>()
+
+    val searchNews = MutableLiveData<NewsResponse>()
 
     fun fetchBreakingNews(){
         viewModelScope.launch {
@@ -47,5 +50,19 @@ class BreakingNewsViewModel @Inject constructor(private val repo: MainRemoteRepo
 
     fun deleteArticle(article: Article) = viewModelScope.launch {
         repo.deleteArticle(article)
+    }
+
+    fun searchForNews(searchQuery: String){
+        viewModelScope.launch {
+            val response = repo.searchForNews(searchQuery)
+            if (response.isSuccessful) {
+                searchNews.postValue(response.body())
+            } else {
+                Log.d(
+                    "Network log",
+                    "searchForNews: code: ${response.code()} message: ${response.message()} "
+                )
+            }
+        }
     }
 }
