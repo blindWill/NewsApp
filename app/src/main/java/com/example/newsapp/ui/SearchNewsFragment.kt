@@ -5,28 +5,26 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsapp.R
+import com.example.newsapp.adapter.BreakingNewsAdapter
+import com.example.newsapp.adapter.Listener
 import com.example.newsapp.adapter.NewsAdapter
 import com.example.newsapp.data.Article
-import com.example.newsapp.databinding.FragmentFavoriteNewsBinding
 import com.example.newsapp.databinding.FragmentSearchNewsBinding
-import com.example.newsapp.utils.Constants
 import com.example.newsapp.utils.Constants.SEARCH_NEWS_TIME_DELAY
 import com.example.newsapp.viewmodels.BreakingNewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SearchNewsFragment : Fragment(), NewsAdapter.Listener {
+class SearchNewsFragment : Fragment(), Listener {
 
     private var _binding: FragmentSearchNewsBinding? = null
     private val binding get() = _binding!!

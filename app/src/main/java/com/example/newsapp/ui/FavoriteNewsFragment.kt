@@ -11,16 +11,16 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.R
+import com.example.newsapp.adapter.Listener
 import com.example.newsapp.adapter.NewsAdapter
 import com.example.newsapp.data.Article
-import com.example.newsapp.databinding.FragmentBreakingNewsBinding
 import com.example.newsapp.databinding.FragmentFavoriteNewsBinding
 import com.example.newsapp.viewmodels.BreakingNewsViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FavoriteNewsFragment : Fragment(), NewsAdapter.Listener {
+class FavoriteNewsFragment : Fragment(), Listener {
 
     private var _binding: FragmentFavoriteNewsBinding? = null
     private val binding get() = _binding!!
@@ -74,7 +74,7 @@ class FavoriteNewsFragment : Fragment(), NewsAdapter.Listener {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val position = viewHolder.adapterPosition
+                val position = viewHolder.layoutPosition
                 val article = (binding.favoriteNewsRV.adapter as NewsAdapter).differ.currentList[position]
                 viewModel.deleteArticle(article)
                 Snackbar.make(view, "Successfully deleted article", Snackbar.LENGTH_LONG).apply {

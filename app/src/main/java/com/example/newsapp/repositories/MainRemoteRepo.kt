@@ -8,7 +8,7 @@ import javax.inject.Inject
 //@ActivityScoped
 class MainRemoteRepo @Inject constructor(private val newsApi: NewsAPI, private val articleDao: ArticleDao) {
 
-    suspend fun getBreakingNews(country: String) = newsApi.getBreakingNews(country)
+    suspend fun getBreakingNews(country: String, page: Int) = newsApi.getBreakingNews(country, page)
 
     suspend fun searchForNews(searchQuery: String) = newsApi.searchForNews(searchQuery)
 

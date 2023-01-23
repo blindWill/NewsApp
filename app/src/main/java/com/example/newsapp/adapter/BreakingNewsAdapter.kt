@@ -3,6 +3,7 @@ package com.example.newsapp.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -10,8 +11,8 @@ import com.bumptech.glide.Glide
 import com.example.newsapp.data.Article
 import com.example.newsapp.databinding.NewsItemBinding
 
-class NewsAdapter(val context: Context, private val listener: Listener) :
-    RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
+class BreakingNewsAdapter(val context: Context, private val listener: Listener) :
+    PagingDataAdapter<Article, BreakingNewsAdapter.ViewHolder>(differCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
@@ -20,11 +21,8 @@ class NewsAdapter(val context: Context, private val listener: Listener) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(differ.currentList[position], listener)
-    }
-
-    override fun getItemCount(): Int {
-        return differ.currentList.size
+        holder.bind(getItem(position)!!, listener)
+        holder.setIsRecyclable(false)
     }
 
     inner class ViewHolder(private val binding: NewsItemBinding) :
@@ -44,15 +42,15 @@ class NewsAdapter(val context: Context, private val listener: Listener) :
 
     }
 
-    private val differCallback = object: DiffUtil.ItemCallback<Article>(){
-        override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
-            return oldItem.url == newItem.url
-        }
+    companion object {
+        val differCallback = object : DiffUtil.ItemCallback<Article>() {
+            override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
+                return oldItem.url == newItem.url
+            }
 
-        override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
-            return oldItem == newItem
+            override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
+                return oldItem == newItem
+            }
         }
     }
-
-    val differ = AsyncListDiffer(this, differCallback)
 }
